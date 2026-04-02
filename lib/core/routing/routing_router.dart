@@ -1,0 +1,3 @@
+class RoutingRouter {
+  RoutingRouter._();
+}
