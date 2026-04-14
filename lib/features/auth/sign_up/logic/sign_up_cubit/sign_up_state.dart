@@ -6,11 +6,7 @@ final class SignUpInitial extends SignUpState {}
 
 final class SignUpLoading extends SignUpState {}
 
-final class SignUpSuccess extends SignUpState {
-  UserModel user;
-
-  SignUpSuccess(this.user);
-}
+final class SignUpSuccess extends SignUpState {}
 
 final class SignUpFailure extends SignUpState {
   String message;

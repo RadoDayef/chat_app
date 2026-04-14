@@ -17,9 +17,9 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<SignInWithModel> signInWith = [
-      SignInWithModel(image: ConstantImages.google, onTap: () {}),
-      SignInWithModel(image: ConstantImages.apple, onTap: () {}),
-      SignInWithModel(image: ConstantImages.facebook, onTap: () {}),
+      SignInWithModel(image: ConstantImages.google, onTap: () => "This feature is not available.".showToast),
+      SignInWithModel(image: ConstantImages.apple, onTap: () => "This feature is not available.".showToast),
+      SignInWithModel(image: ConstantImages.facebook, onTap: () => "This feature is not available.".showToast),
     ];
     return Scaffold(
       body: SafeArea(
@@ -28,27 +28,23 @@ class SignInScreen extends StatelessWidget {
             padding: .all(12),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: .start,
-                        children: [
-                          Text(
-                            "Hello, Welcome Back",
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: ThemingColors.blackColor),
-                          ),
-                          Text("Happy to see you again, to use your account please login first.", style: TextStyle(fontSize: 16, color: ThemingColors.blackColor)),
-                        ],
+                Align(
+                  alignment: .centerLeft,
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    children: [
+                      Text(
+                        "Hello, Welcome Back",
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: ThemingColors.blackColor),
                       ),
-                    ),
-                    Expanded(flex: 1, child: Image.asset(ConstantImages.signIn)),
-                  ],
+                      Text("Happy to see you again, to use your account please login first.", style: TextStyle(fontSize: 16, color: ThemingColors.blackColor)),
+                    ],
+                  ),
                 ),
-                AuthFormFieldWidget("Email", controller: context.read<SignInCubit>().emailController),
-                26.verticalGap,
-                AuthFormFieldWidget("Password", obscureText: true, controller: context.read<SignInCubit>().passwordController),
+                16.verticalGap,
+                AuthFormFieldWidget("Email", icon: Icons.email_rounded, controller: context.read<SignInCubit>().emailController),
+                16.verticalGap,
+                AuthFormFieldWidget("Password", icon: Icons.lock_rounded, obscureText: true, controller: context.read<SignInCubit>().passwordController),
                 4.verticalGap,
                 Align(
                   alignment: .centerEnd,
@@ -61,7 +57,7 @@ class SignInScreen extends StatelessWidget {
                 BlocListener<SignInCubit, SignInState>(
                   listener: (context, state) {
                     if (state is SignInSuccess) {
-                      Navigator.of(context).pushNamed(RoutingNames.home.route);
+                      Navigator.of(context).pushReplacementNamed(RoutingNames.home.route);
                     } else if (state is SignInFailure) {
                       state.message.showToast;
                     }
@@ -73,7 +69,7 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
                 12.verticalGap,
-                AuthTextButtonWidget(subTitle: "Sign Up", title: "Don't have an account? ", onTap: () => Navigator.of(context).pushNamed(RoutingNames.signUp.route)),
+                AuthTextButtonWidget(subTitle: "Sign Up", title: "Don't have an account? ", onTap: () => Navigator.of(context).pushReplacementNamed(RoutingNames.signUp.route)),
                 24.verticalGap,
                 Row(
                   children: [

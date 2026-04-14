@@ -1,10 +1,10 @@
 enum RoutingNames {
-  splash("/splash"),
+  splash("/"),
   home("/home"),
   chat("/chat"),
   signIn("/signIn"),
   signUp("/signUp"),
-  onBoarding("/"),
+  onBoarding("/onBoarding"),
   forgetPassword("/forgetPassword");
 
   final String route;

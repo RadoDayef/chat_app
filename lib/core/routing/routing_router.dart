@@ -9,6 +9,7 @@ import 'package:chat_app/features/auth/sign_up/ui/sign_up_screen.dart';
 import 'package:chat_app/features/chat/ui/chat_screen.dart';
 import 'package:chat_app/features/home/ui/home_screen.dart';
 import 'package:chat_app/features/on_boarding/ui/on_boarding_screen.dart';
+import 'package:chat_app/features/splash/logic/splash_cubit/splash_cubit.dart';
 import 'package:chat_app/features/splash/ui/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,9 @@ class RoutingRouter {
       case RoutingNames.chat:
         return MaterialPageRoute(builder: (_) => ChatScreen());
       case RoutingNames.splash:
-        return MaterialPageRoute(builder: (_) => SplashScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(create: (context) => DependencyInjection.getIt<SplashCubit>(), child: SplashScreen()),
+        );
       case RoutingNames.signIn:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(create: (context) => DependencyInjection.getIt<SignInCubit>(), child: SignInScreen()),

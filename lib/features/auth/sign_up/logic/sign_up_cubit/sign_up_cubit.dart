@@ -11,15 +11,16 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   SignUpCubit(this._repo) : super(SignUpInitial());
 
-  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
 
-  void sighUp() async {
+  void signUp() async {
     emit(SignUpLoading());
-    ResponseResult<UserModel> response = await _repo.signUpAndSaveUser(UserModel(name: nameController.text, email: emailController.text), passwordController.text);
-    if (response is SuccessResponse<UserModel>) {
-      emit(SignUpSuccess(response.data));
+    ResponseResult<bool> response = await _repo.signUpAndSaveUser(UserModel(name: "${firstNameController.text} ${lastNameController.text}", email: emailController.text), passwordController.text);
+    if (response is SuccessResponse<bool>) {
+      emit(SignUpSuccess());
     } else {
       emit(SignUpFailure((response as FailureResponse).message));
     }

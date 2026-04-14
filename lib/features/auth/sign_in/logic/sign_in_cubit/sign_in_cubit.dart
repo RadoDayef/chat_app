@@ -18,7 +18,11 @@ class SignInCubit extends Cubit<SignInState> {
     emit(SignInLoading());
     ResponseResult<User> response = await _repo.signInWithEmail(emailController.text, passwordController.text);
     if (response is SuccessResponse<User>) {
-      emit(SignInSuccess());
+      if (response.data.emailVerified) {
+        emit(SignInSuccess());
+      } else {
+        emit(SignInFailure("Email not verified"));
+      }
     } else {
       emit(SignInFailure((response as FailureResponse).message));
     }
