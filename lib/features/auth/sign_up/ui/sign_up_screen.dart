@@ -74,7 +74,7 @@ class SignUpScreen extends StatelessWidget {
                 BlocListener<SignUpCubit, SignUpState>(
                   listener: (context, state) {
                     if (state is SignUpSuccess) {
-                      Navigator.of(context).pushNamed(RoutingNames.signIn.route);
+                      Navigator.of(context).pushReplacementNamed(RoutingNames.signIn.route);
                     } else if (state is SignUpFailure) {
                       state.message.showToast;
                     }
