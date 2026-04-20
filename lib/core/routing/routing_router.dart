@@ -6,8 +6,11 @@ import 'package:chat_app/features/auth/sign_in/logic/sign_in_cubit/sign_in_cubit
 import 'package:chat_app/features/auth/sign_in/ui/sign_in_screen.dart';
 import 'package:chat_app/features/auth/sign_up/logic/sign_up_cubit/sign_up_cubit.dart';
 import 'package:chat_app/features/auth/sign_up/ui/sign_up_screen.dart';
+import 'package:chat_app/features/chat/logic/chat_cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/ui/chat_screen.dart';
+import 'package:chat_app/features/home/data/models/chat_model.dart';
 import 'package:chat_app/features/home/logic/home_cubit/home_cubit.dart';
+import 'package:chat_app/features/home/logic/home_search_cubit/home_search_cubit.dart';
 import 'package:chat_app/features/home/ui/home_screen.dart';
 import 'package:chat_app/features/on_boarding/ui/on_boarding_screen.dart';
 import 'package:chat_app/features/splash/logic/splash_cubit/splash_cubit.dart';
@@ -22,10 +25,22 @@ class RoutingRouter {
     switch (RoutingNames.fromRoute(settings.name)) {
       case RoutingNames.home:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(create: (context) => DependencyInjection.getIt<HomeCubit>(), child: HomeScreen()),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => DependencyInjection.getIt<HomeCubit>()),
+              BlocProvider(create: (context) => DependencyInjection.getIt<HomeSearchCubit>()),
+            ],
+            child: HomeScreen(),
+          ),
         );
       case RoutingNames.chat:
-        return MaterialPageRoute(builder: (_) => ChatScreen());
+        ChatModel chatArgs = settings.arguments as ChatModel;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => DependencyInjection.getIt<ChatCubit>(param1: chatArgs.id),
+            child: ChatScreen(chatArgs),
+          ),
+        );
       case RoutingNames.splash:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(create: (context) => DependencyInjection.getIt<SplashCubit>(), child: SplashScreen()),

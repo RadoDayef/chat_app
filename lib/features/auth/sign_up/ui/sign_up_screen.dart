@@ -51,7 +51,7 @@ class SignUpScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: ThemingColors.navyColor,
-                          border: Border.all(color: ThemingColors.whiteColor),
+                          border: .all(color: ThemingColors.whiteColor),
                         ),
                         child: Icon(Icons.add, color: ThemingColors.whiteColor, size: 16),
                       ),

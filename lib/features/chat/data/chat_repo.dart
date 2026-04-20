@@ -7,7 +7,7 @@ class ChatRepo {
 
   Future<ResponseResult<List<MessageModel>>> getChatMessages(String chatId) async {
     try {
-      final response = await _firestore.collection("chats").doc(chatId).collection("messages").orderBy("timeStamp", descending: true).get();
+      final response = await _firestore.collection("chats").doc(chatId).collection("messages").orderBy("timestamp", descending: true).get();
       List<MessageModel> chats = response.docs.map((chat) => MessageModel.fromJson(chat.data())).toList();
       return SuccessResponse(chats);
     } catch (error) {

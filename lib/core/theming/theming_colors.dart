@@ -8,4 +8,5 @@ class ThemingColors {
   static const Color greyColor = Color(0xFF6B6B6B);
   static const Color blackColor = Color(0xFF000000);
   static const Color whiteColor = Color(0xFFFFFFFF);
+  static const Color transparentColor = Color(0x00000000);
 }

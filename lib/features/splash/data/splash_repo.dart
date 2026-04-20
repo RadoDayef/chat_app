@@ -7,9 +7,9 @@ class SplashRepo {
 
   Future<ResponseResult<UserModel>> getCurrentUserData(String userId) async {
     try {
-      final docSnapshot = await _firestore.collection('users').doc(userId).get();
-      if (docSnapshot.exists && docSnapshot.data() != null) {
-        Map<String, dynamic> data = docSnapshot.data()!;
+      final response = await _firestore.collection('users').doc(userId).get();
+      if (response.exists && response.data() != null) {
+        Map<String, dynamic> data = response.data()!;
         return SuccessResponse(UserModel.fromJson(data));
       }
       return FailureResponse("Something went wrong");

@@ -4,8 +4,11 @@ import 'package:chat_app/features/auth/sign_in/data/sign_in_repo.dart';
 import 'package:chat_app/features/auth/sign_in/logic/sign_in_cubit/sign_in_cubit.dart';
 import 'package:chat_app/features/auth/sign_up/data/sign_up_repo.dart';
 import 'package:chat_app/features/auth/sign_up/logic/sign_up_cubit/sign_up_cubit.dart';
+import 'package:chat_app/features/chat/data/chat_repo.dart';
+import 'package:chat_app/features/chat/logic/chat_cubit/chat_cubit.dart';
 import 'package:chat_app/features/home/data/home_repo.dart';
 import 'package:chat_app/features/home/logic/home_cubit/home_cubit.dart';
+import 'package:chat_app/features/home/logic/home_search_cubit/home_search_cubit.dart';
 import 'package:chat_app/features/splash/data/splash_repo.dart';
 import 'package:chat_app/features/splash/logic/splash_cubit/splash_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -17,6 +20,7 @@ class DependencyInjection {
 
   static Future<void> init() async {
     /// Repos
+    getIt.registerLazySingleton<ChatRepo>(() => ChatRepo());
     getIt.registerLazySingleton<HomeRepo>(() => HomeRepo());
     getIt.registerLazySingleton<SplashRepo>(() => SplashRepo());
     getIt.registerLazySingleton<SignUpRepo>(() => SignUpRepo());
@@ -28,6 +32,8 @@ class DependencyInjection {
     getIt.registerFactory(() => SplashCubit(getIt<SplashRepo>()));
     getIt.registerFactory(() => SignUpCubit(getIt<SignUpRepo>()));
     getIt.registerFactory(() => SignInCubit(getIt<SignInRepo>()));
+    getIt.registerFactory(() => HomeSearchCubit(getIt<HomeRepo>()));
     getIt.registerFactory(() => ForgetPasswordCubit(getIt<ForgetPasswordRepo>()));
+    getIt.registerFactoryParam<ChatCubit, String, void>((chatId, _) => ChatCubit(getIt<ChatRepo>(), chatId));
   }
 }
