@@ -10,10 +10,10 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatRepo _repo;
 
   ChatCubit(this._repo, this.chatId) : super(ChatLoading()) {
-    getMessages(chatId);
+    getMessages();
   }
 
-  void getMessages(String chatId) async {
+  void getMessages() async {
     ResponseResult<List<MessageModel>> chats = await _repo.getChatMessages(chatId);
     if (chats is SuccessResponse<List<MessageModel>>) {
       emit(ChatSuccess(chats.data));

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MessageModel {
-  DateTime timestamp;
+  DateTime? timestamp;
   String text, senderId;
 
-  MessageModel({required this.text, required this.senderId, required this.timestamp});
+  MessageModel({required this.text, required this.senderId, this.timestamp});
 
   Map<String, dynamic> toJson() {
     return {"text": text, "senderId": senderId, "timestamp": timestamp?.toIso8601String()};

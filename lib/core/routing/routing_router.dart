@@ -5,8 +5,10 @@ import 'package:chat_app/features/auth/forget_password/ui/forget_password_screen
 import 'package:chat_app/features/auth/sign_in/logic/sign_in_cubit/sign_in_cubit.dart';
 import 'package:chat_app/features/auth/sign_in/ui/sign_in_screen.dart';
 import 'package:chat_app/features/auth/sign_up/logic/sign_up_cubit/sign_up_cubit.dart';
+import 'package:chat_app/features/auth/sign_up/logic/sign_up_image_cubit/sign_up_image_cubit.dart';
 import 'package:chat_app/features/auth/sign_up/ui/sign_up_screen.dart';
 import 'package:chat_app/features/chat/logic/chat_cubit/chat_cubit.dart';
+import 'package:chat_app/features/chat/logic/chat_send_message_cubit/chat_send_message_cubit.dart';
 import 'package:chat_app/features/chat/ui/chat_screen.dart';
 import 'package:chat_app/features/home/data/models/chat_model.dart';
 import 'package:chat_app/features/home/logic/home_cubit/home_cubit.dart';
@@ -36,8 +38,11 @@ class RoutingRouter {
       case RoutingNames.chat:
         ChatModel chatArgs = settings.arguments as ChatModel;
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => DependencyInjection.getIt<ChatCubit>(param1: chatArgs.id),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => DependencyInjection.getIt<ChatCubit>(param1: chatArgs.id)),
+              BlocProvider(create: (context) => DependencyInjection.getIt<ChatSendMessageCubit>(param1: chatArgs.id)),
+            ],
             child: ChatScreen(chatArgs),
           ),
         );
@@ -51,7 +56,13 @@ class RoutingRouter {
         );
       case RoutingNames.signUp:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(create: (context) => DependencyInjection.getIt<SignUpCubit>(), child: SignUpScreen()),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => DependencyInjection.getIt<SignUpCubit>()),
+              BlocProvider(create: (context) => DependencyInjection.getIt<SignUpImageCubit>()),
+            ],
+            child: SignUpScreen(),
+          ),
         );
       case RoutingNames.onBoarding:
         return MaterialPageRoute(builder: (_) => OnBoardingScreen());

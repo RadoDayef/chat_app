@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chat_app/core/routing/routing_names.dart';
 import 'package:chat_app/core/shared/widgets/auth_button_widget.dart';
 import 'package:chat_app/core/shared/widgets/auth_form_field_widget.dart';
@@ -5,6 +7,7 @@ import 'package:chat_app/core/shared/widgets/auth_text_button_widget.dart';
 import 'package:chat_app/core/theming/theming_colors.dart';
 import 'package:chat_app/core/utils/extensions/string_extensions.dart';
 import 'package:chat_app/features/auth/sign_up/logic/sign_up_cubit/sign_up_cubit.dart';
+import 'package:chat_app/features/auth/sign_up/logic/sign_up_image_cubit/sign_up_image_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_numkit/flutter_numkit.dart';
@@ -35,28 +38,43 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 ),
                 16.verticalGap,
-                Stack(
-                  children: [
-                    Container(
-                      width: 14.percentOf(context.screenHeight),
-                      height: 14.percentOf(context.screenHeight),
-                      decoration: BoxDecoration(color: ThemingColors.navyColor, shape: BoxShape.circle),
-                      child: Icon(Icons.camera_enhance_rounded, color: ThemingColors.whiteColor.withAlpha(150), size: 46),
-                    ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Container(
-                        padding: 8.allEdgeInsets,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: ThemingColors.navyColor,
-                          border: .all(color: ThemingColors.whiteColor),
+                BlocBuilder<SignUpImageCubit, File?>(
+                  builder: (context, state) {
+                    return Stack(
+                      children: [
+                        Container(
+                          width: 14.percentOf(context.screenHeight),
+                          height: 14.percentOf(context.screenHeight),
+                          decoration: BoxDecoration(color: ThemingColors.navyColor, shape: BoxShape.circle),
+                          child: state == null
+                              ? Icon(Icons.camera_enhance_rounded, color: ThemingColors.whiteColor.withAlpha(150), size: 46)
+                              : ClipRRect(
+                                  borderRadius: 999.allBorderRadius,
+                                  child: Image.file(state, fit: BoxFit.cover),
+                                ),
                         ),
-                        child: Icon(Icons.add, color: ThemingColors.whiteColor, size: 16),
-                      ),
-                    ),
-                  ],
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: InkWell(
+                            onTap: () async {
+                              await context.read<SignUpImageCubit>().pickImage();
+                              context.read<SignUpCubit>().image = state;
+                            },
+                            child: Container(
+                              padding: 8.allEdgeInsets,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: ThemingColors.navyColor,
+                                border: .all(color: ThemingColors.whiteColor),
+                              ),
+                              child: Icon(Icons.add, color: ThemingColors.whiteColor, size: 16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
                 16.verticalGap,
                 Row(

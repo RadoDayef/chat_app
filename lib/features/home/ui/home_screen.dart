@@ -73,7 +73,6 @@ class HomeScreen extends StatelessWidget {
                     BlocBuilder<HomeSearchCubit, HomeSearchState>(
                       builder: (context, state) {
                         if (state is! HomeSearchInitial) {
-                          print(state.runtimeType);
                           return Column(
                             children: [
                               12.verticalGap,

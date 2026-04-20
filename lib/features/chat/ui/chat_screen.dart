@@ -1,6 +1,7 @@
 import 'package:chat_app/core/shared/models/message_model.dart';
 import 'package:chat_app/core/theming/theming_colors.dart';
 import 'package:chat_app/features/chat/logic/chat_cubit/chat_cubit.dart';
+import 'package:chat_app/features/chat/logic/chat_send_message_cubit/chat_send_message_cubit.dart';
 import 'package:chat_app/features/chat/ui/widgets/message_item_widget.dart';
 import 'package:chat_app/features/home/data/models/chat_model.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,7 @@ class ChatScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextFormField(
+                    controller: context.read<ChatSendMessageCubit>().messageController,
                     decoration: InputDecoration(
                       filled: true,
                       hintText: "Type a message",
@@ -97,11 +99,23 @@ class ChatScreen extends StatelessWidget {
                   ),
                 ),
                 16.horizontalGap,
-                Container(
-                  width: 45,
-                  height: 45,
-                  decoration: BoxDecoration(color: ThemingColors.blackColor.withAlpha((0.05 * 255).toInt()), borderRadius: 16.allBorderRadius),
-                  child: Icon(Icons.send_rounded, color: ThemingColors.blackColor, size: 24),
+                BlocBuilder<ChatSendMessageCubit, ChatSendMessageState>(
+                  builder: (context, state) {
+                    return InkWell(
+                      onTap: () {
+                        context.read<ChatSendMessageCubit>().sendMessage();
+                        context.read<ChatCubit>().getMessages();
+                      },
+                      child: Container(
+                        width: 45,
+                        height: 45,
+                        decoration: BoxDecoration(color: ThemingColors.blackColor.withAlpha((0.05 * 255).toInt()), borderRadius: 16.allBorderRadius),
+                        child: state is ChatSendMessageLoading
+                            ? Center(child: LoadingAnimationWidget.horizontalRotatingDots(color: ThemingColors.blackColor, size: 16))
+                            : Icon(Icons.send_rounded, color: ThemingColors.blackColor, size: 24),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

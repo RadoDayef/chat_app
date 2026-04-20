@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:chat_app/core/network/response_result.dart';
 import 'package:chat_app/core/shared/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 class SignUpRepo {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final sb.SupabaseClient _supabase = sb.Supabase.instance.client;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<ResponseResult<User>> signUpWithEmail(String email, String password) async {
@@ -44,5 +48,16 @@ class SignUpRepo {
       return FailureResponse((saveResponse as FailureResponse).message);
     }
     return FailureResponse((response as FailureResponse).message);
+  }
+
+  Future<ResponseResult<String>> uploadImageToSupabase(File image) async {
+    try {
+      String fileName = "${DateTime.now().millisecondsSinceEpoch}.jpg";
+      await _supabase.storage.from("usersImages").upload(fileName, image);
+      String imageUrl = _supabase.storage.from("usersImages").getPublicUrl(fileName);
+      return SuccessResponse(imageUrl);
+    } catch (error) {
+      return FailureResponse(error.toString());
+    }
   }
 }
