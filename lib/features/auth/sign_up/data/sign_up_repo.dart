@@ -40,7 +40,7 @@ class SignUpRepo {
     ResponseResult<User> response = await signUpWithEmail(user.email, password);
     if (response is SuccessResponse<User>) {
       User userFromFireAuth = response.data;
-      UserModel userModel = user.copyWith(uid: userFromFireAuth.uid);
+      UserModel userModel = user.copyWith(uid: userFromFireAuth.uid, fcmToken: "fcmToken");
       ResponseResult<bool> saveResponse = await saveUserData(userModel);
       if (saveResponse is SuccessResponse<bool>) {
         return SuccessResponse(true);

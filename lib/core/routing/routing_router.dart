@@ -41,7 +41,7 @@ class RoutingRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => DependencyInjection.getIt<ChatCubit>(param1: chatArgs.id)),
-              BlocProvider(create: (context) => DependencyInjection.getIt<ChatSendMessageCubit>(param1: chatArgs.id)),
+              BlocProvider(create: (context) => DependencyInjection.getIt<ChatSendMessageCubit>(param1: chatArgs.id, param2: chatArgs.otherUser)),
             ],
             child: ChatScreen(chatArgs),
           ),

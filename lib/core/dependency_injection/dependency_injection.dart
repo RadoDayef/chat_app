@@ -1,3 +1,4 @@
+import 'package:chat_app/core/shared/models/user_model.dart';
 import 'package:chat_app/features/auth/forget_password/data/forget_password_repo.dart';
 import 'package:chat_app/features/auth/forget_password/logic/forget_password_cubit/forget_password_cubit.dart';
 import 'package:chat_app/features/auth/sign_in/data/sign_in_repo.dart';
@@ -38,6 +39,6 @@ class DependencyInjection {
     getIt.registerFactory(() => HomeSearchCubit(getIt<HomeRepo>()));
     getIt.registerFactory(() => ForgetPasswordCubit(getIt<ForgetPasswordRepo>()));
     getIt.registerFactoryParam<ChatCubit, String, void>((chatId, _) => ChatCubit(getIt<ChatRepo>(), chatId));
-    getIt.registerFactoryParam<ChatSendMessageCubit, String, void>((chatId, _) => ChatSendMessageCubit(getIt<ChatRepo>(), chatId));
+    getIt.registerFactoryParam<ChatSendMessageCubit, String, UserModel>((chatId, otherUser) => ChatSendMessageCubit(getIt<ChatRepo>(), chatId, otherUser));
   }
 }

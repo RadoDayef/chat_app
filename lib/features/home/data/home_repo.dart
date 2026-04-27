@@ -29,9 +29,9 @@ class HomeRepo {
         Map<String, dynamic> data = response.data()!;
         return SuccessResponse(UserModel.fromJson(data));
       }
-      return SuccessResponse(UserModel(name: "User Not Found", email: "User Not Found", imageUrl: ""));
+      return SuccessResponse(UserModel(name: "User Not Found", email: "User Not Found", imageUrl: "", fcmToken: ""));
     } catch (error) {
-      return SuccessResponse(UserModel(name: "User Not Found", email: "User Not Found", imageUrl: ""));
+      return SuccessResponse(UserModel(name: "User Not Found", email: "User Not Found", imageUrl: "", fcmToken: ""));
     }
   }
 
