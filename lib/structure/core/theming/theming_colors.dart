@@ -1,3 +1,0 @@
-class ThemingColors {
-  ThemingColors._();
-}
